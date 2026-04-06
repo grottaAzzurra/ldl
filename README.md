@@ -23,10 +23,15 @@ LDL has its roots in LINC (Logic and Information Network Compiler), a fourth-gen
 1. Clone the ldl/notepad-plus-plus repo to your local machine. Take note of where you cloned it to or the location you downloaded it to.
 2. Open Notepad++.
 3. Navigate to the menu bar and click Language.
+![Image Step 3](notepad-plus-plus/assets/step_3.png)
 4. Slide your mouse down to hover on "User Defined Language" which should open a separate menu of options. Click "Define your Language..." and a new window will pop up.
+![Image Step 4](notepad-plus-plus/assets/step_4.png)
 5. Click the "Import..." button. This will open a window that allows you to search for the repo you cloned in step 1.
+![Image Step 5](notepad-plus-plus/assets/step_5.png)
 6. Within that repo, select the ldl.xml file and click Open.
+![Image Step 6](notepad-plus-plus/assets/step_6.png)
 7. You should have a successful import. You will be able to see it listed as "LDL" in the dropdown menu labeled "User language" in the top left. You can close out of the window and start using the LDL syntax on documents by naming them with the .ldl file extension.
+![Image Step 7](notepad-plus-plus/assets/step_7.png)
 8. If the import failed, return to step 3 and try the step sequence again.
 
 ## Known Limitations

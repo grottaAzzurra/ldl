@@ -1,0 +1,25 @@
+{
+  "name": "ldl-lang",
+  "displayName": "LDL",
+  "description": "Syntax highlighting for LDL",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.110.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "ldl",
+      "aliases": ["LDL", "ldl"],
+      "extensions": [".ldl"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "ldl",
+      "scopeName": "source.ldl",
+      "path": "./syntaxes/ldl.tmLanguage.json"
+    }]
+  }
+}

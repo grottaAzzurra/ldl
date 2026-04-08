@@ -1,0 +1,3 @@
+[submodule "vscode/ldl-lang"]
+	path = vscode/ldl-lang
+	url = git-professional:grottaAzzurra/ldl-lang.git

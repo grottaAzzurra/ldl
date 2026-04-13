@@ -65,7 +65,7 @@ contexts:
     - match: '(?i)(?<![\.])\b(auto.clear;|ac;|auto; write&clear|auto;write&clear|auto; write|auto;write|end;|end.edit;|end.case;|ec;|end.exit;|ee;|end.no.print;|enp;|break;|bk;|end.group;|end.use;|eu;)\s'
       scope: keyword.control.ldl
       # Other
-    - match: '(?i)(?<![\.])\b(access.ext;|aext;|ascending;|as;|attribute;|attr;|channel;|comp.name;|contra;|cn;|cursor;|cu;|data;|da;|date.convert;|dc;|de;|delimiter;|delim;|descending;|dsc;|detach;|det;|dth;|discount.cash;|dcf;|edit.only;|exclusive.use;|exu;|exist;|get.length;|gl;|group;|initialize;|init;|keyonly;|left.align;|la;|lower.case;|lc;|match;|move.array;|mva;|move.auto;|ma;|move.auto.array;|maa;|move.date;|md;|move.time;|mt;|mu;|of;|on.change;|och;|ordinate;|rounded;|rou;|same.as;|secure;|selected.by;|serial;|set.db;|sort;|sorta;|sortd;|so;|stn.info;|si;|upper.case;|uc;|gs;)\s'
+    - match: '(?i)(?<![\.])\b(access.ext;|aext;|ascending;|as;|attribute;|attr;|channel;|comp.name;|contra;|cn;|cursor;|cu;|data;|da;|date.convert;|dc;|de;|delimiter;|delim;|descending;|dsc;|detach;|det;|dth;|discount.cash;|dcf;|edit.only;|exclusive.use;|exu;|exist;|get.length;|gl;|group;|initialize;|init;|keyonly;|left.align;|la;|lower.case;|lc;|match;|move.array;|mva;|move.auto;|ma;|move.auto.array;|maa;|move.date;|md;|move.time;|mt;|of;|on.change;|och;|ordinate;|rounded;|rou;|same.as;|secure;|selected.by;|serial;|set.db;|sort;|sorta;|sortd;|so;|stn.info;|si;|upper.case;|uc;|gs;)\s'
       scope: keyword.other.ldl
       # Date Time Format Keywords
     - match: '(?i)(?<![\.,-])\b(daynum|uk-alpha|us-alpha|in-alpha|dd-mm-yy|dd-mm-ccyy|dd-mmm-yy|dd-mmm-ccyy|ddmmmyy|ddmmmccyy|ddmmyy|ddmmccyy|mm-dd-yy|mm-dd-ccyy|mmddyy|mmddccyy|mmm-dd-yy|mmm-dd-ccyy|mmmddyy|mmmddccyy|yy-mm-dd|ccyy-mm-dd|yy-mmm-dd|ccyy-mmm-dd|yyddd|ccyyddd|yymmdd|ccyymmdd|yymmmdd|ccyymmmdd|today|weekno)\s'
@@ -99,21 +99,96 @@ contexts:
   #     pop: true
 
   strings:
-    # Strings begin and end with double quote, and use backslashes as an escape
-    # character.
-    - match: '\('
+    # Strings begin and end with parentheses and use backslashes as an escape
+    # character. In MCP/OS 2200 they can also be surrounded by double quotes
+    # when creating setup data but it is not required.
+      # cover message windows and setup.data
+    - match: '(?i)(sd;|setup.data;|message;|me;)\s+'
+      captures:
+        1: keyword.control.ldl
+      push: expect_string_complex
+      # cover do.when and case conditionals
+    - match: '(?i)(do.when;|dw;|case;|cs;)\s+'
+      captures:
+        1: keyword.control.ldl  # Change scope to keyword.conditional.ldl if desired.
+      push: expect_string_complex
+      # cover complex and simple move;
+    - match: '(?i)(mv;|move;)\s*'
+      captures:
+        1: keyword.other.ldl
+      push: expect_string_complex
+      # cover attachments;
+    - match: '(?i)(attach;|att;|ats;|attach&space;)\s+' 
+      captures:
+        1: keyword.other.ldl
+      push: expect_string
+      # cover arithmetic operations
+    - match: '(?i)(add;|ad;|divide;|dv;|mu;|multi;|multiply;|subtract;|sb;)\s+' 
+      captures:
+        1: keyword.other.ldl
+      push: expect_number_paren
+  
+  expect_string_complex:
+    # For use with keyword triggers that contain characters between them and the start of the string which need to be captured as part of other contexts.
+    - match: '(?=\([-0-9\s.]+\))'
+      push: expect_number_paren
+    - match: '\("|\('
       scope: punctuation.definition.string.begin.ldl
       push: inside_string
+    - include: keywords
+    - include: non-arithmetic-operators
+    - include: numbers
+    - match: '$'
+      pop: true
+    - match: '\S+'
+      pop: false
+
+  expect_string:
+    # For use with keyword triggers that only contain whitespace between them and the start of the string.
+    - match: '(?=\([-0-9\s.]+\))'
+      push: expect_number_paren
+    - match: '\("|\('
+      scope: punctuation.definition.string.begin.ldl
+      push: inside_string
+    - match: '$'
+      pop: true
+    - match: '\S+'
+      pop: false
 
   inside_string:
     - meta_include_prototype: false
     - meta_scope: string.quoted.double.ldl
     - match: '\\'
       scope: constant.character.escape.ldl
-    - match: '\\[^:]'
-      scope: constant.character.escape.ldl
-    - match: '\)'
+    - match: '\("|\('
+      push: inside_string_nested
+    - match: '"\)|\)'
       scope: punctuation.definition.string.end.ldl
+      pop: true
+
+  inside_string_nested:
+    - meta_include_prototype: false
+    - meta_scope: string.quoted.double.ldl
+    - match: '\\'
+      scope: constant.character.escape.ldl
+    - match: '\("|\('
+      push: inside_string_nested
+    - match: '"\)|\)'
+      pop: true
+
+  expect_number_paren:
+    - match: '\('
+      scope: punctuation.definition.number.begin.ldl
+      set: inside_number_paren
+    - match: '$'
+      pop: true
+    - match: '(?=[^(])'
+      pop: true
+
+  inside_number_paren:
+    - include: numbers
+    - match: '\)'
+      scope: punctuation.definition.number.end.ldl
       pop: true
 
   comments:

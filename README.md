@@ -1,7 +1,9 @@
 # LDL
 
-Syntax highlighting configuration for Logic Development Language (**LDL**), a proprietary language developed by Unisys.
-LDL has its roots in LINC (Logic and Information Network Compiler), a fourth-generation programming language used on Unisys systems. LDL was introduced with the Unisys Enterprise Application Environment (EAE), a platform for building enterprise applications targeting Unisys ClearPath systems, Windows, and various Unix and Linux platforms. Keywords were sourced directly from the official Unisys language documentation.
+Syntax highlighting configuration for Logic Development Language (**LDL**), a proprietary language developed by Unisys Corporation.
+LDL has its roots in LINC (Logic and Information Network Compiler), a fourth-generation programming language (4GL) used on Unisys systems. LDL was introduced with the Unisys Enterprise Application Environment (EAE), a platform for building enterprise applications targeting Unisys ClearPath systems, Windows, and various Unix and Linux platforms. Keywords were sourced directly from the official Unisys language documentation.
+
+[Unisys Corporation](https://www.unisys.com/)
 
 ## Supported Editors:
 - Sublime Text (.sublime-syntax)

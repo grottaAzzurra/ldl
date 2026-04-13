@@ -15,11 +15,11 @@ contexts:
   main:
     # The main context is the initial starting point of our syntax.
     # Include other contexts from here (or specify them directly).
-    - include: conditions
-    - include: keywords
-    - include: numbers
-    - include: operators
     - include: strings
+    - include: conditions
+    - include: operators
+    - include: numbers
+    - include: keywords
 
   keywords:
       # conditionals
@@ -94,6 +94,6 @@ contexts:
 
   comments:
     # Comments begin with a ':' and finish at the end of the line.
-    - match: ':[^=].*'
+    - match: ':.*$'
       scope: comment.line.ldl
  #

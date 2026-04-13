@@ -21,14 +21,37 @@ contexts:
     - include: numbers
     - include: keywords
 
-  operators:
-    - match: '(?i)\b(\+|-|\*\*|\*|\/)\b\W'
-      scope: keyword.operator.arithmetic.ldl
-    - match: '\b(<|>|\=)\b'
-      scope: keyword.operator.logical.ldl
-    - match: '(?i)\b(not|and|or|equal|length;|le;|position;|pos;|po;|format;|ft;|numeric|actual|actual;|back|back;|every|every;|from|from;|until|until;|group|group;|last|last;|total|total;|to.daynumber|to.date|to.alpha|to.daynumber;|to.date;|to.alpha;|giving;)\s'
-      scope: keyword.operator.word.ldl
+  # operators:
+  #   - match: '(?i)\b(\+|-|\*\*|\*|\/)\b\W'
+  #     scope: keyword.operator.arithmetic.ldl
+  #   - match: '\b(<|>|\=)\b'
+  #     scope: keyword.operator.logical.ldl
   
+  non-arithmetic-operators:
+    # Logical operators can appear anywhere in uncommented code
+    - match: '(<|>|\=)'
+      scope: keyword.operator.logical.ldl
+    # Word operators can appear anywhere in uncommented code
+    - match: '(?i)\b(not|and|or|equal|length;|le;|position;|pos;|po;|format;|ft;|numeric|actual;|actual|back;|back|every;|every|from;|from|until;|until|group;|group|last;|last|stb;|total;|total|to.daynumber;|to.date;|to.alpha;|to.daynumber|to.date|to.alpha|giving;|giving)'
+      scope: keyword.operator.word.ldl
+    # Edit operators must be followed by an edit operator character or a string, otherwise they are not considered operators.
+    - match: '(?i)\b(edit;|ed;)\s*'
+      scope: keyword.operator.word.ldl
+      push: expect_edit_operator
+
+  arithmetic-operators:
+      # Arithmetic Operators only appear inside parens that are preceded by the compute; or comp; keywords.
+    - match: '(?<=[\w)])\s*(\+|-|\*\*|\*|\/)\s*(?=[\w(])'
+      scope: keyword.operator.arithmetic.ldl
+
+  expect_edit_operator:
+      # edit alphanumeric (a), kanji (k), hankaku-katakana (w), numeric (n), date (d), (c), (s), negative (-), positive (+), currency ($) data items
+    - match: '(?i)(a|d|k|w|n|c|s|-|\+|\$)'
+      scope: keyword.operator.character.ldl
+      pop: true
+    - match: '(?=\S)'
+      pop: true
+
   numbers:
     - match: '(?<=[\s(+\-*\/])-?[0-9]*\.[0-9]+\b'
       scope: constant.numeric.ldl

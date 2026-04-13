@@ -21,6 +21,20 @@ contexts:
     - include: numbers
     - include: keywords
 
+  operators:
+    - match: '(?i)\b(\+|-|\*\*|\*|\/)\b\W'
+      scope: keyword.operator.arithmetic.ldl
+    - match: '\b(<|>|\=)\b'
+      scope: keyword.operator.logical.ldl
+    - match: '(?i)\b(not|and|or|equal|length;|le;|position;|pos;|po;|format;|ft;|numeric|actual|actual;|back|back;|every|every;|from|from;|until|until;|group|group;|last|last;|total|total;|to.daynumber|to.date|to.alpha|to.daynumber;|to.date;|to.alpha;|giving;)\s'
+      scope: keyword.operator.word.ldl
+  
+  numbers:
+    - match: '\b(-)?[0-9]+\b'
+      scope: constant.numeric.ldl
+    - match: '\.(?:[0-9])'
+      scope: constant.numeric.ldl
+
   keywords:
       # conditionals
     - match: '(?i)(?<![\.])\b(determine|determine;|auto.entry;|ae;|auto.array;|aua;|auto.entry;|ae;|auto.array;|aua;|begin.case;|bc;|begin.edit;|begin.loop;|bg;|dt;|do.when;|dw;|look.up;|lu;)\s'
@@ -37,19 +51,6 @@ contexts:
       captures:
         2: keyword.other.ldl
 
-  operators:
-    - match: '(?i)\b(\+|-|\*\*|\*|\/)\b\W'
-      scope: keyword.operator.arithmetic.ldl
-    - match: '\b(<|>|\=)\b'
-      scope: keyword.operator.logical.ldl
-    - match: '(?i)\b(not|and|or|equal|length;|le;|position;|pos;|po;|format;|ft;|numeric|actual|actual;|back|back;|every|every;|from|from;|until|until;|group|group;|last|last;|total|total;|to.daynumber|to.date|to.alpha|to.daynumber;|to.date;|to.alpha;|giving;)\s'
-      scope: keyword.operator.word.ldl
-
-  numbers:
-    - match: '\b(-)?[0-9]+\b'
-      scope: constant.numeric.ldl
-    - match: '\.(?:[0-9])'
-      scope: constant.numeric.ldl
 
   # conditions:
   #   # conditions begin and end with parentheses, and use backslashes as an escape

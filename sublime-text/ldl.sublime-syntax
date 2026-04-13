@@ -75,28 +75,46 @@ contexts:
       captures:
         2: keyword.other.ldl
 
-  # conditions:
-  #   # conditions begin and end with parentheses, and use backslashes as an escape
-  #   # character.
-  #   - match: '\('
-  #     scope: punctuation.section.parens.begin.ldl
-  #     push: inside_condition
+  conditions:
+    # Conditions begin and end with parentheses
+    # and use backslashes as an escape character.
+    - match: '(?i)(compute;|comp;)\s+'
+      captures:
+        1: keyword.other.ldl
+      push: expect_compute
+    - match: '\('
+      scope: punctuation.section.parens.begin.ldl
+      push: inside_condition
+    
+  expect_compute:
+    - match: '\('
+      scope: punctuation.section.parens.begin.ldl
+      set: inside_compute
+    - match: '$'
+      pop: true
 
-  # inside_condition:
-  #   # - meta_include_prototype: false
-  #   - include: strings
-  #   - include: operators
-  #   - include: numbers
-  #   - include: keywords
-  #   - include: conditions
-  #   - meta_scope: meta.parens.ldl
-  #   - match: '\\'
-  #     scope: constant.character.escape.ldl
-  #   - match: '\\[^:]'
-  #     scope: constant.character.escape.ldl
-  #   - match: '\)'
-  #     scope: punctuation.section.parens.end.ldl
-  #     pop: true
+  inside_compute:
+    - meta_scope: meta.parens.ldl
+    - include: arithmetic-operators
+    - include: keywords
+    - include: numbers
+    - match: '\('
+      scope: punctuation.section.parens.begin.ldl
+      push: inside_compute
+    - match: '\)'
+      scope: punctuation.section.parens.end.ldl
+      pop: true
+
+  inside_condition:
+    # - meta_include_prototype: false
+    - include: non-arithmetic-operators
+    - include: numbers
+    - include: keywords
+    - include: conditions
+    - meta_scope: meta.parens.ldl
+    - match: '\)'
+      scope: punctuation.section.parens.end.ldl
+      pop: true
 
   strings:
     # Strings begin and end with parentheses and use backslashes as an escape

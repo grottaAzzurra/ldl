@@ -20,12 +20,6 @@ contexts:
     - include: operators
     - include: numbers
     - include: keywords
-
-  # operators:
-  #   - match: '(?i)\b(\+|-|\*\*|\*|\/)\b\W'
-  #     scope: keyword.operator.arithmetic.ldl
-  #   - match: '\b(<|>|\=)\b'
-  #     scope: keyword.operator.logical.ldl
   
   non-arithmetic-operators:
     # Logical operators can appear anywhere in uncommented code

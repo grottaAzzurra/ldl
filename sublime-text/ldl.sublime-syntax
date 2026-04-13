@@ -34,12 +34,13 @@ contexts:
       push: expect_edit_operator
 
   arithmetic-operators:
-      # Arithmetic Operators only appear inside parens that are preceded by the compute; or comp; keywords.
+    # Arithmetic operators only appear inside parens that are preceded by the compute; or comp; keywords.
     - match: '(?<=[\w)])\s*(\+|-|\*\*|\*|\/)\s*(?=[\w(])'
       scope: keyword.operator.arithmetic.ldl
 
   expect_edit_operator:
-      # edit alphanumeric (a), kanji (k), hankaku-katakana (w), numeric (n), date (d), (c), (s), negative (-), positive (+), currency ($) data items
+    # Edit operators must be followed by an edit operator character or string, otherwise they are not considered operators.
+    # edit alphanumeric (a), kanji (k), hankaku-katakana (w), numeric (n), date (d), (c), (s), negative (-), positive (+), currency ($) data items
     - match: '(?i)(a|d|k|w|n|c|s|-|\+|\$)'
       scope: keyword.operator.character.ldl
       pop: true
@@ -47,37 +48,39 @@ contexts:
       pop: true
 
   numbers:
+    # Numbers can appear as negatives and/or decimals.
     - match: '(?<=[\s(+\-*\/])-?[0-9]*\.[0-9]+\b'
       scope: constant.numeric.ldl
     - match: '(?<=[\s(+\-*\/])-?[0-9]+\b'
       scope: constant.numeric.ldl
 
   keywords:
-      # Control
-        # In the EAE editor, control flow syntax is not differentiated stylistically
-        # based on whether a keyword is a conditional or not. For this reason, the
-        # control scope is applied across the board. 
+    # Control
+      # In the EAE editor, control flow syntax is not differentiated stylistically
+      # based on whether a keyword is a conditional or not. For this reason, the
+      # control scope is applied across the board to Control and Conditional keywords.
     - match: '(?i)(?<![\.])\b(attention|error|abort;|accept;|ax;|adhoc.mode;|adhoc;|advance;|av;|auto;|au;|determine;|determine|dt;|auto.entry;|ae;|auto.array;|aua;|auto.entry;|ae;|begin.case;|bc;|auto.format;|af;|begin.edit;|begin.loop;|bg;|look.up;|lu;|begin.page;|bp;|clear.array;|cla;|call;|wake.up;|wu;|restart;|rt;|perform.frame.logic;|pfl;|print.frame;|pf;|purge;|pu;|recall;|rc;|release;|rel;|critical.point;|cp;|no.release;|nr;|switch.to;|swt;|jump.to;|jto;|extract;|ex;|extracted.as;|eas;|flag;|fl;|fg;|flag.array;|fla;|global.sd;|gsd;|insert;|ins;|label;|lab;|find;|find|get;|load;|new.page;|new.page|page;|pg;|retain.as;|run;|set.title;|sett;|start;|st;|roc.mode;|roc;|send.print;|send;|sp;|sendlist.dynamic;|sldyn;|sendlist.static;|slsta;|send.message;|sm;|smsg;|sleep;|slp;)\s'
       scope: keyword.control.ldl
-      # Conditional
-    - match: '(?i)(?<![\.])\b(else;|otherwise;|ow;)\s'
-      scope: keyword.control.ldl # Change scope to keyword.conditional.ldl if desired.
     - match: '(?i)(?<![\.])\b(auto.clear;|ac;|auto; write&clear|auto;write&clear|auto; write|auto;write|end;|end.edit;|end.case;|ec;|end.exit;|ee;|end.no.print;|enp;|break;|bk;|end.group;|end.use;|eu;)\s'
       scope: keyword.control.ldl
-      # Other
+    # Conditional
+    - match: '(?i)(?<![\.])\b(else;|otherwise;|ow;)\s'
+      scope: keyword.control.ldl # Change scope to keyword.conditional.ldl if desired.
+    # Other
     - match: '(?i)(?<![\.])\b(access.ext;|aext;|ascending;|as;|attribute;|attr;|channel;|comp.name;|contra;|cn;|cursor;|cu;|data;|da;|date.convert;|dc;|de;|delimiter;|delim;|descending;|dsc;|detach;|det;|dth;|discount.cash;|dcf;|edit.only;|exclusive.use;|exu;|exist;|get.length;|gl;|group;|initialize;|init;|keyonly;|left.align;|la;|lower.case;|lc;|match;|move.array;|mva;|move.auto;|ma;|move.auto.array;|maa;|move.date;|md;|move.time;|mt;|of;|on.change;|och;|ordinate;|rounded;|rou;|same.as;|secure;|selected.by;|serial;|set.db;|sort;|sorta;|sortd;|so;|stn.info;|si;|upper.case;|uc;|gs;)\s'
       scope: keyword.other.ldl
-      # Date Time Format Keywords
+    # Date Time Format Keywords
     - match: '(?i)(?<![\.,-])\b(daynum|uk-alpha|us-alpha|in-alpha|dd-mm-yy|dd-mm-ccyy|dd-mmm-yy|dd-mmm-ccyy|ddmmmyy|ddmmmccyy|ddmmyy|ddmmccyy|mm-dd-yy|mm-dd-ccyy|mmddyy|mmddccyy|mmm-dd-yy|mmm-dd-ccyy|mmmddyy|mmmddccyy|yy-mm-dd|ccyy-mm-dd|yy-mmm-dd|ccyy-mmm-dd|yyddd|ccyyddd|yymmdd|ccyymmdd|yymmmdd|ccyymmmdd|today|weekno)\s'
       scope: keyword.other.ldl
-      # System Data Items
+    # System Data Items
     - match: '(?i)(\s|\b)(actmth|glb.2pc|glb.actionkey|glb.add|glb.altuser|glb.appname|glb.appno|glb.ascprthost|glb.ascprt|glb.backup|glb.balance|glb.base|glb.ccs|glb.century-start|glb.century|glb.change|glb.chargecode|glb.chg|glb.close|glb.copy|glb.date|glb.dbtype|glb.dc|glb.deadlock|glb.del|glb.destenv|glb.desthost|glb.destination|glb.destnoform|glb.destxnid|glb.device|glb.dlrecover|glb.dlretry|glb.eop|glb.error|glb.examkey|glb.exname|glb.extdbstatus|glb.extdb|glb.extext|glb.fileinfo|glb.filler|glb.formdepth|glb.formid|glb.fulllength|glb.fullstn|glb.gui|glb.high|glb.htimeout|glb.hubstatus|glb.hubtimeout|glb.initfullstn|glb.initstn|glb.inputdata|glb.inq|glb.language|glb.length|glb.linecount|glb.lineupname|glb.lineup|glb.low|glb.match|glb.maxcopy|glb.mixno|glb.numcopies|glb.oltpservice|glb.oltpsubtype|glb.oltptype|glb.oltpvalue|glb.originenv|glb.originhost|glb.originispec|glb.originptn|glb.originxnid|glb.origin|glb.pagecount|glb.paramflag|glb.param|glb.pitch|glb.previspec|glb.printat|glb.printbanner|glb.printhost|glb.priority|glb.priv|glb.product|glb.prtparam|glb.pur|glb.recordx|glb.recover|glb.repgendate|glb.repgentime|glb.replang|glb.repname|glb.report|glb.repunique|glb.repversion|glb.request|glb.rocflag|glb.savedays|glb.secondary|glb.selfdb|glb.selfenv|glb.selfhost|glb.selfxnid|glb.self|glb.shadow|glb.source|glb.spaces|glb.stalang|glb.station|glb.status|glb.stnhost|glb.stn|glb.style|glb.subsys|glb.sysgendate|glb.sysgentime|glb.sysversion|glb.task|glb.time|glb.title|glb.todays-date-num|glb.todays-day|glb.todays-month-num|glb.todays-month|glb.todays-year|glb.today|glb.total|glb.transtate|glb.unique|glb.usercode|glb.user|glb.versionid|glb.work|glb.yymmdd|glb.zeros|input-date|ispec|maint|today|todays-date-num|todays-day|todays-month|todays-month-num|todays-year|tranno)(\s|\b)'
       captures:
         2: keyword.other.ldl
 
   conditions:
-    # Conditions begin and end with parentheses
-    # and use backslashes as an escape character.
+    # Conditions begin and end with parentheses. They can be nested inside
+    # other conditions and inside compute statements but not inside strings.
+    # They can be preceded by keywords or other operators but not by arithmetic operators.
     - match: '(?i)(compute;|comp;)\s+'
       captures:
         1: keyword.other.ldl
@@ -87,6 +90,8 @@ contexts:
       push: inside_condition
     
   expect_compute:
+    # For use with compute; and comp; keywords to ensure that the parentheses that
+    # follow them are highlighted as part of the compute statement and not as part of a condition.
     - match: '\('
       scope: punctuation.section.parens.begin.ldl
       set: inside_compute
@@ -94,6 +99,7 @@ contexts:
       pop: true
 
   inside_compute:
+    # Within a computation, only arithmetic operators, numbers, keywords, and nested parentheses are valid.
     - meta_scope: meta.parens.ldl
     - include: arithmetic-operators
     - include: keywords
@@ -106,7 +112,7 @@ contexts:
       pop: true
 
   inside_condition:
-    # - meta_include_prototype: false
+    # Within a condition, only non-arithmetic operators, numbers, keywords, and nested parentheses are valid.
     - include: non-arithmetic-operators
     - include: numbers
     - include: keywords
@@ -120,34 +126,41 @@ contexts:
     # Strings begin and end with parentheses and use backslashes as an escape
     # character. In MCP/OS 2200 they can also be surrounded by double quotes
     # when creating setup data but it is not required.
-      # cover message windows and setup.data
+    #
+    # Message windows and Setup Data Triggers
     - match: '(?i)(sd;|setup.data;|message;|me;)\s+'
       captures:
         1: keyword.control.ldl
       push: expect_string_complex
-      # cover do.when and case conditionals
+    # Do.When and Case Conditional Triggers
     - match: '(?i)(do.when;|dw;|case;|cs;)\s+'
       captures:
         1: keyword.control.ldl  # Change scope to keyword.conditional.ldl if desired.
       push: expect_string_complex
-      # cover complex and simple move;
+    # Move statements can be followed by either strings or numbers in parens and may have
+    # operators between them and the start of the string/number parens,
+    # so we need to cover both cases in the expect_string_complex context
     - match: '(?i)(mv;|move;)\s*'
       captures:
         1: keyword.other.ldl
       push: expect_string_complex
-      # cover attachments;
+    # Attachments
     - match: '(?i)(attach;|att;|ats;|attach&space;)\s+' 
       captures:
         1: keyword.other.ldl
       push: expect_string
-      # cover arithmetic operations
+    # Arithmetic operations
     - match: '(?i)(add;|ad;|divide;|dv;|mu;|multi;|multiply;|subtract;|sb;)\s+' 
       captures:
         1: keyword.other.ldl
       push: expect_number_paren
   
   expect_string_complex:
-    # For use with keyword triggers that contain characters between them and the start of the string which need to be captured as part of other contexts.
+    # For use with keyword triggers that contain characters between them and the
+    # start of the string which need to be captured as part of other contexts.
+    # If the string contains numbers only we want to highlight it as a number,
+    # not a string, though in EAE Editor it is not differentiated stylistically.
+    # Sometimes strings have double quotes, but not always, so we need to account for both cases.
     - match: '(?=\([-0-9\s.]+\))'
       push: expect_number_paren
     - match: '\("|\('
@@ -162,7 +175,11 @@ contexts:
       pop: false
 
   expect_string:
-    # For use with keyword triggers that only contain whitespace between them and the start of the string.
+    # For use with keyword triggers that only contain whitespace between 
+    # them and the start of the string. If the string contains numbers only
+    # we want to highlight it as a number, not a string, though in EAE Editor
+    # it is not differentiated stylistically. Sometimes strings have double quotes,
+    # but not always, so we need to account for both cases.
     - match: '(?=\([-0-9\s.]+\))'
       push: expect_number_paren
     - match: '\("|\('
@@ -174,6 +191,9 @@ contexts:
       pop: false
 
   inside_string:
+    # Strings can be nested inside other strings, so we need to push the same context
+    # again when we encounter a new string start. We also need to pop the context
+    # when we encounter a string end, but only if it is not escaped.
     - meta_include_prototype: false
     - meta_scope: string.quoted.double.ldl
     - match: '\\'
@@ -185,6 +205,9 @@ contexts:
       pop: true
 
   inside_string_nested:
+    # Coverage for nested strings so only the outer parens are highlighted
+    # as string delimiters. Any parens within the string are treated as part of
+    # the string content.
     - meta_include_prototype: false
     - meta_scope: string.quoted.double.ldl
     - match: '\\'
@@ -195,6 +218,9 @@ contexts:
       pop: true
 
   expect_number_paren:
+    # To treat Strings that contain only numbers as numbers.
+    # If the end of the line is reached before the closing paren, we pop the
+    # context to avoid highlighting the rest of the file as part of the number.
     - match: '\('
       scope: punctuation.definition.number.begin.ldl
       set: inside_number_paren
@@ -204,6 +230,8 @@ contexts:
       pop: true
 
   inside_number_paren:
+    # To treat Strings that contain only numbers as numbers.
+    # A closing paren will end the number context.
     - include: numbers
     - match: '\)'
       scope: punctuation.definition.number.end.ldl

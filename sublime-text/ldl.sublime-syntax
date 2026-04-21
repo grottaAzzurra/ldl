@@ -17,7 +17,7 @@ contexts:
     # Include other contexts from here (or specify them directly).
     - include: strings
     - include: conditions
-    - include: operators
+    - include: non-arithmetic-operators
     - include: numbers
     - include: keywords
   

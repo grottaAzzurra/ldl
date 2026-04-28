@@ -42,9 +42,13 @@ LDL has its roots in LINC (Logic and Information Network Compiler), a fourth-gen
 
 ## Known Limitations
 ### Notepad++ — Comment Highlighting
-LDL supports inline comments denoted by a colon (:), which comment out only the word or phrase directly following the colon rather than the remainder of the line. Due to constraints in the Notepad++ User Defined Language (UDL) system, which does not support regex-based token boundaries, comment highlighting in Notepad++ will highlight everything following a colon to the end of the line. This is a limitation of the UDL format and not a bug in the configuration itself. 
+LDL supports inline comments denoted by a colon (:), which comments out only the word or phrase directly following the colon rather than the remainder of the line. Due to constraints in the Notepad++ User Defined Language (UDL) system, which does not support regex-based token boundaries, comment highlighting in Notepad++ will highlight everything following a colon to the end of the line. This is a limitation of the UDL format and not a bug in the configuration itself. 
 For accurate inline comment highlighting, use the Enterprise Application Environment (**EAE**) IDE.
 ### Sublime Text — Comment Highlighting
 LDL supports inline comments denoted by a colon (:), which comments out only the word or phrase directly following the colon rather than the remainder of the line. Due to constraints in the Sublime Syntax system, comment highlighting in Sublime Text will highlight everything following a colon to the end of the line. This is a limitation of the format and not a bug in the configuration itself. It is due to the ability of the EAE editor to swap syntactic highlighting rules when the editor-processor encounters a named variable in the setup data list.
 For accurate inline comment highlighting, use the Enterprise Application Environment (**EAE**) IDE.  
+
+## Notes
+_Sublime Text scope was created based on scope naming conventions found [here](https://www.sublimetext.com/docs/scope_naming.html)_
+_Notepad++ scope was created using UDL definitions found [here](https://npp-user-manual.org/docs/user-defined-language-system/)_
 ~
